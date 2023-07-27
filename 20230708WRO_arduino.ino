@@ -1,8 +1,8 @@
 // Adafruit Motor shield library
 // copyright Adafruit Industries LLC, 2009
 // this code is public domain, enjoy!
-char c[15],test;
-int i=0;
+char c[15];
+int i=0,speed1,heanding=100;
 #include <AFMotor.h>
 #include <string.h>
 #include <Servo.h> 
@@ -12,7 +12,7 @@ AF_DCMotor motor3(3);
 AF_DCMotor motor4(4);
 Servo servo1;
 void setup() {
-  Serial.begin(9600);           // set up Serial library at 9600 bps
+  Serial.begin(19200);           // set up Serial library at 9600 bps
   Serial.println("Motor test!");
   servo1.attach(9);
   // turn on motor
@@ -28,12 +28,14 @@ void setup() {
 }
 
 void loop() {
-   int speed1=0,heanding=0;
+   
    if (Serial.available()) 
    {   
+       
        c[i] = Serial.read();
-       if(c[i]=='E')
+       if(c[i]==10)
        {
+        speed1=0;heanding=0;
         i=0;
         for(int j=0;j<=strlen(c);j++)
         {
@@ -66,28 +68,35 @@ void loop() {
        }
    }
    
-//  uint8_t i;
-//  Serial.print("tick");
-//  
-//  motor1.run(FORWARD);
-//  motor2.run(FORWARD);
-//  motor3.run(BACKWARD);
-//  motor4.run(BACKWARD);
-//  for (i=0; i<255; i++) {
-//    motor1.setSpeed(i);
-//    motor2.setSpeed(i);   
-//    motor3.setSpeed(i);
-//    motor4.setSpeed(i);      
-//    delay(10);
-//  }
-//  servo1.write(100);
-//  delay(2000);
-//  servo1.write(85);
-//  delay(1000);
-//  servo1.write(100);
-//  delay(2000);
-//  servo1.write(115);
-//  delay(1000);
-//  servo1.write(100);
-//  delay(2000);
+    uint8_t i;
+    //Serial.print("tick");
+    
+    motor1.run(FORWARD);
+    motor2.run(FORWARD);
+    motor3.run(BACKWARD);
+    motor4.run(BACKWARD);
+    
+    motor1.setSpeed(speed1);
+    motor2.setSpeed(speed1);   
+    motor3.setSpeed(speed1);
+    motor4.setSpeed(speed1);      
+    
+    if(heanding<=70)
+    {
+      heanding=70;
+    }
+    else if(heanding>=130)
+    {
+      heanding=130;
+    }
+    servo1.write(heanding);
+//    delay(2000);
+//    servo1.write(85);
+//    delay(1000);
+//    servo1.write(100);
+//    delay(2000);
+//    servo1.write(115);
+//    delay(1000);
+//    servo1.write(100);
+//    delay(2000);
 }
